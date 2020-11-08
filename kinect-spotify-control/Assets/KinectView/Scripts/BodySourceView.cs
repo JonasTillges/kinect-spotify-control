@@ -69,7 +69,7 @@ public class BodySourceView : MonoBehaviour
             if (body == null)
             {
                 continue;
-              }
+            }
                 
             if(body.IsTracked)
             {
