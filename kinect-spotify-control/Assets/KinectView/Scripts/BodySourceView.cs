@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Kinect = Windows.Kinect;
+using System;
 
 public class BodySourceView : MonoBehaviour 
 {
@@ -73,7 +74,7 @@ public class BodySourceView : MonoBehaviour
             if(body.IsTracked)
             {
                 trackedIds.Add (body.TrackingId);
-            }
+            } 
         }
         
         List<ulong> knownIds = new List<ulong>(_Bodies.Keys);
@@ -103,6 +104,9 @@ public class BodySourceView : MonoBehaviour
                 }
                 
                 RefreshBodyObject(body, _Bodies[body.TrackingId]);
+
+
+
             }
         }
     }
