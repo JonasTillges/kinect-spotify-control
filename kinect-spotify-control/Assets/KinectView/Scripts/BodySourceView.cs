@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Kinect = Windows.Kinect;
 using System;
+using Windows.Kinect;
 
 public class BodySourceView : MonoBehaviour 
 {
@@ -105,7 +106,31 @@ public class BodySourceView : MonoBehaviour
                 
                 RefreshBodyObject(body, _Bodies[body.TrackingId]);
 
+                string rightHandState = "-";
+                string leftHandState = "-";
+                Console.Write("state check");
+                switch (body.HandRightState)
+                {
+                    case HandState.Open:
+                        rightHandState = "Open";
+                        break;
+                    case HandState.Closed:
+                        rightHandState = "Closed";
+                        break;
+                    case HandState.Lasso:
+                        rightHandState = "Lasso";
+                        break;
+                    case HandState.Unknown:
+                        rightHandState = "Unknown...";
+                        break;
+                    case HandState.NotTracked:
+                        rightHandState = "Not tracked";
+                        break;
+                    default:
+                        break;
+                }
 
+                Debug.Log(rightHandState);
 
             }
         }
@@ -153,11 +178,14 @@ public class BodySourceView : MonoBehaviour
                 lr.SetPosition(0, jointObj.localPosition);
                 lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
                 lr.SetColors(GetColorForState (sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
+                Console.Write(body.HandRightState);
             }
             else
             {
                 lr.enabled = false;
             }
+
+            
         }
     }
     
