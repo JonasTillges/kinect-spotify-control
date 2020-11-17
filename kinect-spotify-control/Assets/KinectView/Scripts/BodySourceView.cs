@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using Kinect = Windows.Kinect;
 using System;
 using Windows.Kinect;
+using Spotify4Unity;
 
 public class BodySourceView : MonoBehaviour 
 {
     public Material BoneMaterial;
     public GameObject BodySourceManager;
-    
+    public GameObject spotifyServiceObject;
+    private SpotifyService spotifyService;
+
+    //SpotifyService spotifyService = GameObject.Find("SpotifyService").GetComponent<SpotifyService>();
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
     
@@ -44,8 +48,13 @@ public class BodySourceView : MonoBehaviour
         { Kinect.JointType.SpineShoulder, Kinect.JointType.Neck },
         { Kinect.JointType.Neck, Kinect.JointType.Head },
     };
+    void Start()
+    {
+        spotifyService = spotifyServiceObject.GetComponent<SpotifyService>();
+    }
     
-    void Update () 
+
+    void Update()
     {
         if (BodySourceManager == null)
         {
@@ -108,7 +117,7 @@ public class BodySourceView : MonoBehaviour
 
                 string rightHandState = "-";
                 string leftHandState = "-";
-                Console.Write("state check");
+
                 switch (body.HandRightState)
                 {
                     case HandState.Open:
@@ -116,6 +125,7 @@ public class BodySourceView : MonoBehaviour
                         break;
                     case HandState.Closed:
                         rightHandState = "Closed";
+                        spotifyService.Play();
                         break;
                     case HandState.Lasso:
                         rightHandState = "Lasso";
@@ -130,12 +140,14 @@ public class BodySourceView : MonoBehaviour
                         break;
                 }
 
-                Debug.Log(rightHandState);
 
             }
         }
     }
-    
+
+
+
+
     private GameObject CreateBodyObject(ulong id)
     {
         GameObject body = new GameObject("Body:" + id);
@@ -178,7 +190,7 @@ public class BodySourceView : MonoBehaviour
                 lr.SetPosition(0, jointObj.localPosition);
                 lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
                 lr.SetColors(GetColorForState (sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
-                Console.Write(body.HandRightState);
+                
             }
             else
             {

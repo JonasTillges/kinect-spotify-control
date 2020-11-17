@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoneMaterial: {fileID: 2100000, guid: f2ea145c63353784985576f08398a815, type: 2}
   BodySourceManager: {fileID: 1698423884}
+  spotifyService: {fileID: 1525050541}
 --- !u!1 &660022884
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,6 +608,64 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1525050541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1525050543}
+  - component: {fileID: 1525050542}
+  m_Layer: 0
+  m_Name: SpotifyService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1525050542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525050541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ca646b88b99ddd45a8984e783548cfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ClientId: 1cae85555e4c46b2b7470133def30226
+  ConnectionTimeout: 60
+  AutoConnect: 1
+  UpdateFrequencyMs: 1000
+  LogLevel: 1
+  ReuseAuthTokens: 1
+  Scopes: 260094
+  IsPlaying: 0
+  IsConnected: 0
+  IsMuted: 0
+  ShuffleState: 0
+  RepeatState: 0
+  CurrentTrackTimeMs: 0
+  SecretId: 9ed35b11b9b342fcb9577f6828c5ad27
+  ConnectionPort: 8000
+--- !u!4 &1525050543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525050541}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.37702814, y: 0.97163147, z: -278.54852}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1608503454
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,7 +870,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1747301865}
-  - component: {fileID: 1747301863}
   - component: {fileID: 1747301864}
   - component: {fileID: 1747301862}
   - component: {fileID: 1747301861}
@@ -838,33 +896,6 @@ Behaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1747301860}
   m_Enabled: 1
---- !u!114 &1747301863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1747301860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ca646b88b99ddd45a8984e783548cfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ClientId: 1cae85555e4c46b2b7470133def30226
-  ConnectionTimeout: 60
-  AutoConnect: 1
-  UpdateFrequencyMs: 1000
-  LogLevel: 1
-  ReuseAuthTokens: 1
-  Scopes: 260094
-  IsPlaying: 0
-  IsConnected: 0
-  IsMuted: 0
-  ShuffleState: 0
-  RepeatState: 0
-  CurrentTrackTimeMs: 0
-  SecretId: 9ed35b11b9b342fcb9577f6828c5ad27
-  ConnectionPort: 8000
 --- !u!20 &1747301864
 Camera:
   m_ObjectHideFlags: 0
