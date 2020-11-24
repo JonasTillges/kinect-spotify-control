@@ -5,13 +5,17 @@ using Kinect = Windows.Kinect;
 using System;
 using Windows.Kinect;
 using Spotify4Unity;
+using System.Threading.Tasks;
 
 public class BodySourceView : MonoBehaviour 
 {
     public Material BoneMaterial;
+    public Material HandMaterial;
+    public Material HeadMaterial;
     public GameObject BodySourceManager;
     public GameObject spotifyServiceObject;
     private SpotifyService spotifyService;
+    private bool isExecuting = false;
 
     //SpotifyService spotifyService = GameObject.Find("SpotifyService").GetComponent<SpotifyService>();
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
@@ -115,30 +119,55 @@ public class BodySourceView : MonoBehaviour
                 
                 RefreshBodyObject(body, _Bodies[body.TrackingId]);
 
-                string rightHandState = "-";
-                string leftHandState = "-";
 
-                switch (body.HandRightState)
-                {
-                    case HandState.Open:
-                        rightHandState = "Open";
-                        break;
-                    case HandState.Closed:
-                        rightHandState = "Closed";
-                        spotifyService.Play();
-                        break;
-                    case HandState.Lasso:
-                        rightHandState = "Lasso";
-                        break;
-                    case HandState.Unknown:
-                        rightHandState = "Unknown...";
-                        break;
-                    case HandState.NotTracked:
-                        rightHandState = "Not tracked";
-                        break;
-                    default:
-                        break;
+                if (!isExecuting) {
+                    switch (body.HandLeftState)
+                    {
+                        case HandState.Open:
+                            break;
+                        case HandState.Closed:
+                            Task.Run(async () =>
+                            {
+                                isExecuting = true;
+                                await spotifyService.PauseAsync();
+                            }).ContinueWith((response) => {
+                                isExecuting = false;
+                            });
+                            break;
+                        case HandState.Lasso:
+                            break;
+                        case HandState.Unknown:
+                            break;
+                        case HandState.NotTracked:
+                            break;
+                        default:
+                            break;
+                    }
+                    
+                    switch (body.HandRightState)
+                    {
+                        case HandState.Open:
+                            break;
+                        case HandState.Closed:
+                            Task.Run(async () =>
+                            {
+                                isExecuting = true;
+                                await spotifyService.PlayAsync();
+                            }).ContinueWith((response) => {
+                                isExecuting = false;
+                            });
+                            break;
+                        case HandState.Lasso:
+                            break;
+                        case HandState.Unknown:
+                            break;
+                        case HandState.NotTracked:
+                            break;
+                        default:
+                            break;
+                    }
                 }
+     
 
 
             }
@@ -164,6 +193,35 @@ public class BodySourceView : MonoBehaviour
             jointObj.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
             jointObj.name = jt.ToString();
             jointObj.transform.parent = body.transform;
+
+
+            string jtName = jt.ToString();
+
+            if (jtName == "Head")
+            {
+                jointObj.transform.localScale = new Vector3(3f, 3f, 3f);
+                jointObj.GetComponent<MeshRenderer>().material = HeadMaterial;
+                
+
+            }
+            else if (jtName == "HandRight")
+            {
+                jointObj.transform.localScale = new Vector3(3f, 3f, 3f);
+                jointObj.transform.rotation = new Quaternion(0, 180, 0, 0);
+                jointObj.GetComponent<MeshRenderer>().material = HandMaterial;
+                jointObj.AddComponent<BoxCollider>();
+                jointObj.AddComponent<Rigidbody>();
+                jointObj.GetComponent<Rigidbody>().isKinematic = true;
+            }
+            else if (jtName == "HandLeft")
+            {
+                jointObj.transform.localScale = new Vector3(3f, 3f, 3f);
+                jointObj.transform.rotation = new Quaternion(0, 180, 0, 0);
+                jointObj.GetComponent<MeshRenderer>().material = HandMaterial;
+                jointObj.AddComponent<BoxCollider>();
+                jointObj.AddComponent<Rigidbody>();
+                jointObj.GetComponent<Rigidbody>().isKinematic = true;
+            }
         }
         
         return body;

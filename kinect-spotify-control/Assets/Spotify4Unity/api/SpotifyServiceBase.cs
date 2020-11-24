@@ -631,12 +631,14 @@ namespace Spotify4Unity
 
         public async Task PlayAsync()
         {
+
+            Debug.Log(IsPlaying);
             if (!IsPlaying)
             {
                 await m_webAPI.ResumePlaybackAsync("", "", null, "");
                 IsPlaying = true;
                 SetPlaying(IsPlaying);
-
+                Debug.Log(IsPlaying);
                 if (CurrentTrack != null)
                     Analysis.Log($"Resuming song '{CurrentTrack.Artist.Name} - {CurrentTrack.Title}'", Analysis.LogLevel.All);
             }
