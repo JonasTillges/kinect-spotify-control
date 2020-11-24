@@ -14,6 +14,7 @@ public class BodySourceView : MonoBehaviour
     public Material HeadMaterial;
     public GameObject BodySourceManager;
     public GameObject spotifyServiceObject;
+    public GameObject LeftHandObject;
     private SpotifyService spotifyService;
     private bool isExecuting = false;
 
@@ -218,6 +219,10 @@ public class BodySourceView : MonoBehaviour
                 jointObj.transform.localScale = new Vector3(3f, 3f, 3f);
                 jointObj.transform.rotation = new Quaternion(0, 180, 0, 0);
                 jointObj.GetComponent<MeshRenderer>().material = HandMaterial;
+                if (isExecuting) {
+                    jointObj.GetComponent<MeshRenderer>().material.color = Color.red;
+                }
+
                 jointObj.AddComponent<BoxCollider>();
                 jointObj.AddComponent<Rigidbody>();
                 jointObj.GetComponent<Rigidbody>().isKinematic = true;
