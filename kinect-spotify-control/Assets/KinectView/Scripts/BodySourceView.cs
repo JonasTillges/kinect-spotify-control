@@ -53,9 +53,13 @@ public class BodySourceView : MonoBehaviour
         { Kinect.JointType.SpineShoulder, Kinect.JointType.Neck },
         { Kinect.JointType.Neck, Kinect.JointType.Head },
     };
+
+    
     void Start()
     {
         spotifyService = spotifyServiceObject.GetComponent<SpotifyService>();
+
+
     }
     
 
@@ -148,8 +152,6 @@ public class BodySourceView : MonoBehaviour
                     switch (body.HandRightState)
                     {
                         case HandState.Open:
-                            break;
-                        case HandState.Closed:
                             Task.Run(async () =>
                             {
                                 isExecuting = true;
@@ -157,6 +159,8 @@ public class BodySourceView : MonoBehaviour
                             }).ContinueWith((response) => {
                                 isExecuting = false;
                             });
+                            break;
+                        case HandState.Closed:
                             break;
                         case HandState.Lasso:
                             break;
@@ -182,6 +186,7 @@ public class BodySourceView : MonoBehaviour
     {
         GameObject body = new GameObject("Body:" + id);
         
+        
         for (Kinect.JointType jt = Kinect.JointType.SpineBase; jt <= Kinect.JointType.ThumbRight; jt++)
         {
             GameObject jointObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -202,7 +207,8 @@ public class BodySourceView : MonoBehaviour
             {
                 jointObj.transform.localScale = new Vector3(3f, 3f, 3f);
                 jointObj.GetComponent<MeshRenderer>().material = HeadMaterial;
-                
+                jointObj.tag = "Head";
+
 
             }
             else if (jtName == "HandRight")
@@ -213,6 +219,7 @@ public class BodySourceView : MonoBehaviour
                 jointObj.AddComponent<BoxCollider>();
                 jointObj.AddComponent<Rigidbody>();
                 jointObj.GetComponent<Rigidbody>().isKinematic = true;
+                jointObj.tag = "HandRight";
             }
             else if (jtName == "HandLeft")
             {
@@ -226,6 +233,7 @@ public class BodySourceView : MonoBehaviour
                 jointObj.AddComponent<BoxCollider>();
                 jointObj.AddComponent<Rigidbody>();
                 jointObj.GetComponent<Rigidbody>().isKinematic = true;
+                jointObj.tag = "HandLeft";
             }
         }
         

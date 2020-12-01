@@ -1,19 +1,22 @@
 ﻿using Spotify4Unity;
+using Spotify4Unity.Dtos;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class HandGestures : MonoBehaviour
 {
-    public GameObject handLeft;
-    public GameObject handRight;
-    public GameObject head;
+    private GameObject handLeft;
+    private GameObject handRight;
+    private GameObject head;
     public GameObject spotifyServiceObject;
     private SpotifyService spotifyService;
     public Material[] headMaterials;
     private Material _defaultHeadMaterial;
     private bool switched = false;
 
+    private bool isExecuting = false;
 
     void Start()
     {
@@ -27,10 +30,20 @@ public class HandGestures : MonoBehaviour
             float handLeftY = handLeft.transform.position.y;
             float handRightY = handRight.transform.position.y;
             float headY = head.transform.position.y;
-
-            if (headY < handLeftY && headY < handRightY && headMaterials.Length > 0 && switched == false)
+            if (headY < handLeftY && headY < handRightY)
             {
-                spotifyService.PlaySong("spotify:track:5rb9QrpfcKFHM1EUbSIurX");
+                if (!isExecuting) {
+                    //Debug.LogWarning("play musika");
+                    Task.Run(async () =>
+                    {
+                        isExecuting = true;
+                        spotifyService.SetVolume(100);
+                        //await spotifyService.PlaySongAsync(trackUri: "spotify:track:463oFGElXVcP8ueC72zvMj", deviceId: spotifyService.Devices[0].Id);
+                    }).ContinueWith((response) => {
+                        isExecuting = false;
+                    });
+                }
+      
             }
             
         }
@@ -40,19 +53,15 @@ public class HandGestures : MonoBehaviour
     {
         if (handLeft == null)
         {
-            handLeft = transform.Find("HandLeft").gameObject;
+            handLeft = GameObject.FindWithTag("HandLeft");
         }
         if (handRight == null)
         {
-            handRight = transform.Find("HandRight").gameObject;
+            handRight = GameObject.FindWithTag("HandRight");
         }
         if (head == null)
         {
-            head = transform.Find("Head").gameObject;
-            if (head != null)
-            {
-                _defaultHeadMaterial = head.GetComponent<Renderer>().material;
-            }
+            head = GameObject.FindWithTag("Head");
         }
 
         if (handLeft == null || handRight == null || head == null)
@@ -63,5 +72,6 @@ public class HandGestures : MonoBehaviour
         {
             return true;
         }
+
     }
 }
