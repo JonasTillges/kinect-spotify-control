@@ -3,6 +3,7 @@ using Spotify4Unity.Dtos;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 public class HandGestures : MonoBehaviour
@@ -30,23 +31,40 @@ public class HandGestures : MonoBehaviour
             float handLeftY = handLeft.transform.position.y;
             float handRightY = handRight.transform.position.y;
             float headY = head.transform.position.y;
+
+            SwipeGestureAsync();
+           
             if (headY < handLeftY && headY < handRightY)
             {
-                if (!isExecuting) {
-                    //Debug.LogWarning("play musika");
-                    Task.Run(async () =>
-                    {
-                        isExecuting = true;
-                        spotifyService.SetVolume(100);
-                        //await spotifyService.PlaySongAsync(trackUri: "spotify:track:463oFGElXVcP8ueC72zvMj", deviceId: spotifyService.Devices[0].Id);
-                    }).ContinueWith((response) => {
-                        isExecuting = false;
-                    });
-                }
-      
+               
+                //spotifyService.SetVolume(100)
+                /*
+                Task.Run(async () =>
+                {
+                    isExecuting = true;
+                    await spotifyService.NextSongAsync();
+                }).ContinueWith((response) => {
+                    isExecuting = false;
+                }); */
             }
+     
+       
             
         }
+    }
+
+    void SwipeGestureAsync()
+    {
+        float handRightXFirstSnapshot = handRight.transform.position.x;
+
+        Task.Delay(1000).ContinueWith((response) =>
+        {
+            float handRightXSecoundSnapshot = handRight.transform.position.x;
+            if ((handRightXFirstSnapshot - handRightXSecoundSnapshot) > 1)
+            {
+                spotifyService.SetVolume(100);
+            }
+        });
     }
 
     bool EnsureObjects()
