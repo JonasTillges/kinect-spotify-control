@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 using UnityEngine;
+using System;
 
 public class HandGestures : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class HandGestures : MonoBehaviour
     private Material _defaultHeadMaterial;
     private bool switched = false;
 
+    private bool detecting = false;
     private bool isExecuting = false;
 
     void Start()
@@ -36,16 +38,17 @@ public class HandGestures : MonoBehaviour
            
             if (headY < handLeftY && headY < handRightY)
             {
-               
-                //spotifyService.SetVolume(100)
-                /*
-                Task.Run(async () =>
+                if (!isExecuting)
                 {
-                    isExecuting = true;
-                    await spotifyService.NextSongAsync();
-                }).ContinueWith((response) => {
-                    isExecuting = false;
-                }); */
+                    Task.Run(async () =>
+                    {
+                        isExecuting = true;
+                        await spotifyService.SetVolumeAsync(100);
+                    }).ContinueWith((response) => {
+                        isExecuting = false;
+                    });
+                }
+   
             }
      
        
@@ -55,16 +58,26 @@ public class HandGestures : MonoBehaviour
 
     void SwipeGestureAsync()
     {
+        
         float handRightXFirstSnapshot = handRight.transform.position.x;
 
-        Task.Delay(1000).ContinueWith((response) =>
+        Task.Delay(1000).ContinueWith(async (response) =>
         {
             float handRightXSecoundSnapshot = handRight.transform.position.x;
-            if ((handRightXFirstSnapshot - handRightXSecoundSnapshot) > 1)
+            if (Math.Abs(Math.Abs(handRightXFirstSnapshot) - Math.Abs(handRightXSecoundSnapshot)) >= 1)
             {
-                spotifyService.SetVolume(100);
+
+                Debug.LogWarning("skip");
+          
+                    await spotifyService.NextSongAsync();
+                
+
+
             }
         });
+        
+           
+
     }
 
     bool EnsureObjects()
