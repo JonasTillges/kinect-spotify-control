@@ -3,7 +3,9 @@ using Spotify4Unity.Dtos;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
+using System;
 
 public class HandGestures : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class HandGestures : MonoBehaviour
     private Material _defaultHeadMaterial;
     private bool switched = false;
 
+    private bool detecting = false;
     private bool isExecuting = false;
 
     void Start()
@@ -30,23 +33,51 @@ public class HandGestures : MonoBehaviour
             float handLeftY = handLeft.transform.position.y;
             float handRightY = handRight.transform.position.y;
             float headY = head.transform.position.y;
+
+            SwipeGestureAsync();
+           
             if (headY < handLeftY && headY < handRightY)
             {
-                if (!isExecuting) {
-                    //Debug.LogWarning("play musika");
+                if (!isExecuting)
+                {
                     Task.Run(async () =>
                     {
                         isExecuting = true;
-                        spotifyService.SetVolume(100);
-                        //await spotifyService.PlaySongAsync(trackUri: "spotify:track:463oFGElXVcP8ueC72zvMj", deviceId: spotifyService.Devices[0].Id);
+                        await spotifyService.SetVolumeAsync(100);
                     }).ContinueWith((response) => {
                         isExecuting = false;
                     });
                 }
-      
+   
             }
+     
+       
             
         }
+    }
+
+    void SwipeGestureAsync()
+    {
+        
+        float handRightXFirstSnapshot = handRight.transform.position.x;
+
+        Task.Delay(1000).ContinueWith(async (response) =>
+        {
+            float handRightXSecoundSnapshot = handRight.transform.position.x;
+            if (Math.Abs(Math.Abs(handRightXFirstSnapshot) - Math.Abs(handRightXSecoundSnapshot)) >= 1)
+            {
+
+                Debug.LogWarning("skip");
+          
+                    await spotifyService.NextSongAsync();
+                
+
+
+            }
+        });
+        
+           
+
     }
 
     bool EnsureObjects()
