@@ -70,9 +70,6 @@ public class HandGestures : MonoBehaviour
                 Debug.LogWarning("skip");
           
                     await spotifyService.NextSongAsync();
-                
-
-
             }
         });
         
