@@ -213,26 +213,26 @@ public class BodySourceView : MonoBehaviour
             }
             else if (jtName == "HandRight")
             {
-                jointObj.transform.localScale = new Vector3(3f, 3f, 3f);
-                jointObj.transform.rotation = new Quaternion(0, 180, 0, 0);
-                jointObj.GetComponent<MeshRenderer>().material = HandMaterial;
-                jointObj.AddComponent<BoxCollider>();
-                jointObj.AddComponent<Rigidbody>();
-                jointObj.GetComponent<Rigidbody>().isKinematic = true;
+                //jointObj.transform.localScale = new Vector3(3f, 3f, 3f);
+                //jointObj.transform.rotation = new Quaternion(0, 180, 0, 0);
+                //jointObj.GetComponent<MeshRenderer>().material = HandMaterial;
+                //jointObj.AddComponent<BoxCollider>();
+                //jointObj.AddComponent<Rigidbody>();
+                //jointObj.GetComponent<Rigidbody>().isKinematic = true;
                 jointObj.tag = "HandRight";
             }
             else if (jtName == "HandLeft")
             {
-                jointObj.transform.localScale = new Vector3(3f, 3f, 3f);
-                jointObj.transform.rotation = new Quaternion(0, 180, 0, 0);
-                jointObj.GetComponent<MeshRenderer>().material = HandMaterial;
-                if (isExecuting) {
-                    jointObj.GetComponent<MeshRenderer>().material.color = Color.red;
-                }
+                //jointObj.transform.localScale = new Vector3(3f, 3f, 3f);
+                //jointObj.transform.rotation = new Quaternion(0, 180, 0, 0);
+                //jointObj.GetComponent<MeshRenderer>().material = HandMaterial;
+                //if (isExecuting) {
+                  //  jointObj.GetComponent<MeshRenderer>().material.color = Color.red;
+                //}
 
-                jointObj.AddComponent<BoxCollider>();
-                jointObj.AddComponent<Rigidbody>();
-                jointObj.GetComponent<Rigidbody>().isKinematic = true;
+                //jointObj.AddComponent<BoxCollider>();
+                //jointObj.AddComponent<Rigidbody>();
+                //jointObj.GetComponent<Rigidbody>().isKinematic = true;
                 jointObj.tag = "HandLeft";
             }
         }
